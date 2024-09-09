@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  // States for entry, mood, and journal entries
   const [entry, setEntry] = useState('');
   const [mood, setMood] = useState('');
   const [journalEntries, setJournalEntries] = useState([]);
 
+  // Load saved entries from localStorage when the component mounts
   useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('journalEntries'));
     if (savedEntries) {
@@ -13,16 +15,18 @@ function App() {
     }
   }, []);
 
+  // Update localStorage whenever journalEntries state changes
   useEffect(() => {
     localStorage.setItem('journalEntries', JSON.stringify(journalEntries));
   }, [journalEntries]);
 
+  // Save a new journal entry
   const saveEntry = () => {
     if (entry.trim() && mood) {
       const newEntry = { entry, mood, date: new Date().toLocaleDateString() };
       setJournalEntries([...journalEntries, newEntry]);
-      setEntry('');
-      setMood('');
+      setEntry('');  // Reset the entry field
+      setMood('');   // Reset the mood selector
     }
   };
 
