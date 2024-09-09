@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const [entry, setEntry] = useState('');
   const [mood, setMood] = useState('');
   const [journalEntries, setJournalEntries] = useState([]);
+
+  useEffect(() => {
+    const savedEntries = JSON.parse(localStorage.getItem('journalEntries'));
+    if (savedEntries) {
+      setJournalEntries(savedEntries);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('journalEntries', JSON.stringify(journalEntries));
+  }, [journalEntries]);
 
   const saveEntry = () => {
     if (entry.trim() && mood) {
