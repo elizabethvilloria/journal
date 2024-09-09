@@ -4,6 +4,16 @@ import './App.css';
 function App() {
   const [entry, setEntry] = useState('');
   const [mood, setMood] = useState('');
+  const [journalEntries, setJournalEntries] = useState([]);
+
+  const saveEntry = () => {
+    if (entry.trim() && mood) {
+      const newEntry = { entry, mood, date: new Date().toLocaleDateString() };
+      setJournalEntries([...journalEntries, newEntry]);
+      setEntry('');
+      setMood('');
+    }
+  };
 
   return (
     <div className="container">
@@ -19,7 +29,16 @@ function App() {
         <option value="neutral">Neutral</option>
         <option value="sad">Sad</option>
       </select>
-      <button>Save Entry</button>
+      <button onClick={saveEntry}>Save Entry</button>
+
+      <h2>Past Entries</h2>
+      <ul>
+        {journalEntries.map((entry, index) => (
+          <li key={index}>
+            {entry.date} - {entry.mood} - {entry.entry}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
